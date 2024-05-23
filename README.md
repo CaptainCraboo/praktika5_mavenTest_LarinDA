@@ -1,5 +1,78 @@
-Практическая работа №5: "Система сборки Maven и написание юнит-тестов"
-Выполнил: студент группы УИМО-02-23 Ларин Денис
------------------
-Изначально работа была выполнена на паре в облачной среде разработке Repl.It, 
-а затем экспортирована в виде .zip архива и добавлена в качестве репозитория GitHub
+#Задание 1 (обязательное)
+Нашей целью будет переделать проект с приложением про бонус с покупки на Maven и его протестировать.
+
+##Шаг 1. Создайте проект на базе Maven.
+
+##Шаг 2. Добавьте в проект JUnit Jupiter & Surefire Plugin.
+
+##Шаг 3. Создайте сервисный класс со следующим исходным кодом:
+
+public class BonusService {
+  public long calculate(long amount, boolean registered) {
+    int percent = registered ? 3 : 1;
+    long bonus = amount * percent / 100;
+    long limit = 500;
+    if (bonus > limit) {
+      bonus = limit;
+    }
+    return bonus;
+  }
+}
+##Шаг 4. Создайте тестовый класс со следующим исходным кодом:
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
+public class BonusServiceTest {
+
+  @Test
+  void shouldCalculateForRegisteredAndUnderLimit() {
+    BonusService service = new BonusService();
+
+    // подготавливаем данные:
+    long amount = 1000;
+    boolean registered = true;
+    long expected = 30;
+
+    // вызываем целевой метод:
+    long actual = service.calculate(amount, registered);
+
+    // производим проверку (сравниваем ожидаемый и фактический):
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  void shouldCalculateForRegisteredAndOverLimit() {
+    BonusService service = new BonusService();
+
+    // подготавливаем данные:
+    long amount = 1_000_000;
+    boolean registered = true;
+    long expected = 500;
+
+    // вызываем целевой метод:
+    long actual = service.calculate(amount, registered);
+
+    // производим проверку (сравниваем ожидаемый и фактический):
+    Assertions.assertEquals(expected, actual);
+  }
+}
+##Шаг 5. Запустите тесты через mvn clean test, убедитесь, что они запускаются и проходят.
+
+##Шаг 6. Проведите поверхностный тест-дизайн сервисного класса, допишите как минимум два недостающих и прямо напрашивающихся теста.
+
+##Шаг 7. Убедитесь, что тесты запускаются и проходят.
+
+Итого: отправьте на проверку ссылку на репозиторий GitHub с вашим проектом.
+
+##Как открыть JaCoCo отчет 
+To start a simple server to view the Jacoco coverage report in a web browser, you can use Python's built-in HTTP server. Here's how you can do it step by step:
+
+1. Open a terminal or a command prompt.
+2. Navigate to the directory where your Jacoco coverage report 'index.html' is located.
+3. В Shell перейдите в папку расположения site\jacoco. Для этого запустите команду cd target/site/jacoco
+4. Run the following command to start a simple HTTP server:
+python3 -m http.server
+5. В первый раз вам зададут вопрос: Install Replit's Python tools [y/n] . Ответьте y.
+5. Еще раз запустите команду python3 -m http.server
+Open a web browser and go to, where is the Jacoco coverage report you want to view. This will start a local server and allow you to view the Jacoco coverage report in your web browser.
